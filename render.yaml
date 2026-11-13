@@ -1,0 +1,48 @@
+
+services:
+  - type: web
+    name: franquicias-api-iac
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+
+      - key: DB_HOST
+        fromDatabase:
+          name: franquicias-db-iac
+          property: host
+
+      - key: DB_PORT
+        fromDatabase:
+          name: franquicias-db-iac
+          property: port
+
+      - key: DB_NAME
+        fromDatabase:
+          name: franquicias-db-iac
+          property: database
+
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: franquicias-db-iac
+          property: user
+
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: franquicias-db-iac
+          property: password
+
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+
+databases:
+  - name: franquicias-db-iac
+    databaseName: franquicias_db
+    user: franquicias_user
+    plan: free
+    region: oregon
+    postgresMajorVersion: "17"
